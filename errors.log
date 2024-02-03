@@ -1,0 +1,50 @@
+For: ./pipex no_in cat wc outfile.txt
+Error: Input files does not exist
+                 ╷                          ╷       
+                 │ native                   │ pipex 
+╺━━━━━━━━━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━┿━━━━━━╸
+ return code     │ 0                        │ 1     
+╶────────────────┼──────────────────────────┼──────╴
+ outfile content │        0       0       0 │       
+                 │                          │       
+                 ╵                          ╵       
+
+For: ./pipex no_r_perm cat wc outfile.txt
+Error: Input files does not have read permissions
+                 ╷                          ╷       
+                 │ native                   │ pipex 
+╺━━━━━━━━━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━┿━━━━━━╸
+ return code     │ 0                        │ 1     
+╶────────────────┼──────────────────────────┼──────╴
+ outfile content │        0       0       0 │       
+                 │                          │       
+                 ╵                          ╵       
+
+For: ./pipex infile.txt ./script.sh ./script.sh outfile.txt
+with no PATH set
+Error: The PATH variable does not exist with local scripts
+                 ╷                              ╷                     
+                 │ native                       │ pipex               
+╺━━━━━━━━━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━╸
+ return code     │ 0                            │ -11                 
+╶────────────────┼──────────────────────────────┼────────────────────╴
+ outfile content │ Teste file with stuff inside │ has some stuff here 
+                 │ That does nothing            │                     
+                 │ And also have some lines     │                     
+                 │ Some more text               │                     
+                 │ Some more text               │                     
+                 │                              │                     
+                 ╵                              ╵                     
+
+For: ./pipex infile.txt cat script.sh outfile.txt
+Error: Should not match local script if it does not have a dot before the name
+                 ╷        ╷                              
+                 │ native │ pipex                        
+╺━━━━━━━━━━━━━━━━┿━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+ outfile content │        │ Teste file with stuff inside 
+                 │        │ That does nothing            
+                 │        │ And also have some lines     
+                 │        │ Some more text               
+                 │        │                              
+                 ╵        ╵                              
+
